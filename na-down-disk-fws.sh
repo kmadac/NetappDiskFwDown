@@ -3,7 +3,7 @@
 # Enter LOGIN and PASS as first and second argument
 # ex: ./na-down-disk-fws.sh user_name passxxx 
 
-# TODO: script rguments check
+# TODO: script arguments check
 #       simulator mode, which could be used for regular testing whether login process still works
 
 LOGIN=$1
