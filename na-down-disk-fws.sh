@@ -8,16 +8,17 @@
 
 LOGIN=$1
 PASS=$2
+AGENT='netapp downloader'
 
-curl -s -c cookies.dat -L http://mysupport.netapp.com/
-curl -s -c cookies.dat -b cookies.dat -L http://mysupport.netapp.com/cssportal/faces/oracle/webcenter/portalapp/pages/css/home/CssDashboard.jspx
-curl -s -c cookies.dat -b cookies.dat -L 'https://signin.netapp.com/netapp_action.html' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'DNT: 1' -H 'Referer: https://signin.netapp.com/oamext/login.html'  -H 'Connection: keep-alive' --data "action=login&user=${LOGIN}&password=${PASS}&postpreservationdata=" > out.dat
+curl -A "$AGENT" -s -c cookies.dat -L http://mysupport.netapp.com/
+curl -A "$AGENT" -s -c cookies.dat -b cookies.dat -L http://mysupport.netapp.com/cssportal/faces/oracle/webcenter/portalapp/pages/css/home/CssDashboard.jspx
+curl -A "$AGENT" -s -c cookies.dat -b cookies.dat -L 'https://signin.netapp.com/netapp_action.html' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'DNT: 1' -H 'Referer: https://signin.netapp.com/oamext/login.html'  -H 'Connection: keep-alive' --data "action=login&user=${LOGIN}&password=${PASS}&postpreservationdata=" > out.dat
 grep -i 'Incorrect Username or Password' out.dat > /dev/null
 UNSUCCESS=$?
 
 if [ $UNSUCCESS == "1" ]; then
   echo "Downloading firmwares ..."
-  curl -b cookies.dat -L -O http://mysupport.netapp.com/download/tools/diskfw/bin/all.zip
+  curl -A "$AGENT" -b cookies.dat -L -O http://mysupport.netapp.com/download/tools/diskfw/bin/all.zip
 else
   echo "Incorrect Username or Password!!!"
 fi
